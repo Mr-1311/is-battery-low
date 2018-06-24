@@ -1,0 +1,37 @@
+#!/bin/bash
+
+LOW=15
+TOO_LOW=5
+
+CHARGING_STATUS=`acpi -b | grep -P -o '[A-z]+(?=,)'`
+CURRENT_BATTERY=`acpi -b | grep -P -o '[0-9]+(?=%)'`
+
+[[ ! -f "~/.is_battery_notify_sent" ]] && touch ~/.is_battery_notify_sent
+
+IS_NOTIFY_SENT=`cat ~/.is_battery_notify_sent`
+
+if [[ $CHARGING_STATUS = "Discharging" ]]; then
+
+	if [[ $IS_NOTIFY_SENT -eq "2" ]]; then
+		exit
+
+	elif [[ $CURRENT_BATTERY -le $TOO_LOW ]]; then
+		echo "2" > ~/.is_battery_notify_sent
+		notify-send -u critical "Extremely Low Battery" "Battery level is `echo $CURRENT_BATTERY`%!"
+		exit 
+
+	elif [[ $IS_NOTIFY_SENT -eq "1" ]]; then
+		exit
+
+	elif [[ $CURRENT_BATTERY -le $LOW ]]; then
+		echo "1" > ~/.is_battery_notify_sent
+		notify-send -u critical "Low Battery" "Battery level is `echo $CURRENT_BATTERY`%!"
+		exit 
+	fi
+			
+else
+	if [[ $IS_NOTIFY_SENT -ne "0" ]]; then
+		echo "0" > ~/.is_battery_notify_sent
+		exit 
+	fi
+fi
