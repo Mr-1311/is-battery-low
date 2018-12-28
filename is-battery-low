@@ -19,14 +19,14 @@ while true ; do
 	    
 	elif [[ $CURRENT_BATTERY -le $TOO_LOW ]]; then
 	    echo "2" > ~/.is_battery_notify_sent
-            /usr/bin/dunstify -u critical "Extremely Low Battery" "Battery level is `echo $CURRENT_BATTERY`%!"
+            /usr/bin/notify-send -u critical "Extremely Low Battery" "Battery level is `echo $CURRENT_BATTERY`%!"
 	    
 	elif [[ $IS_NOTIFY_SENT -eq "1" ]]; then
 	    continue
 	    
 	elif [[ $CURRENT_BATTERY -le $LOW ]]; then
 	    echo "1" > ~/.is_battery_notify_sent
-	    /usr/bin/dunstify -u critical "Low Battery" "Battery level is `echo $CURRENT_BATTERY`%!"
+	    /usr/bin/notify-send -u critical "Low Battery" "Battery level is `echo $CURRENT_BATTERY`%!"
 	fi
 	
     else
