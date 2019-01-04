@@ -1,7 +1,8 @@
 #!/bin/bash
 
-LOW=15
-TOO_LOW=5
+LOW=20
+TOO_LOW=10
+SLEEP_TIME=60
 
 while true ; do
 
@@ -35,6 +36,6 @@ while true ; do
 	fi
     fi
 
-    sleep 60
+    sleep $SLEEP_TIME
     
 done
