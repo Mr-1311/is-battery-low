@@ -15,17 +15,11 @@ while true ; do
 
     if [[ $CHARGING_STATUS = "Discharging" ]]; then
 
-	if [[ $IS_NOTIFY_SENT -eq "2" ]]; then
-	    continue
-	    
-	elif [[ $CURRENT_BATTERY -le $TOO_LOW ]]; then
+	if [[ $IS_NOTIFY_SENT -ne "2" && $CURRENT_BATTERY -le $TOO_LOW ]]; then
 	    echo "2" > ~/.is_battery_notify_sent
             /usr/bin/notify-send -u critical "Extremely Low Battery" "Battery level is `echo $CURRENT_BATTERY`%!"
 	    
-	elif [[ $IS_NOTIFY_SENT -eq "1" ]]; then
-	    continue
-	    
-	elif [[ $CURRENT_BATTERY -le $LOW ]]; then
+	elif [[ $IS_NOTIFY_SENT -ne "1" && $CURRENT_BATTERY -le $LOW && $CURRENT_BATTERY -gt $TOO_LOW ]]; then
 	    echo "1" > ~/.is_battery_notify_sent
 	    /usr/bin/notify-send -u critical "Low Battery" "Battery level is `echo $CURRENT_BATTERY`%!"
 	fi
